@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h3> EXISTING ORDER</h3>
+    <ul class="list-group">
+    {% for client in clients %}
+        <li class="list-group-item"><a href="order/{{client.id}}">{{client.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
