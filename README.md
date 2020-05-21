@@ -1,6 +1,6 @@
 A simple python flask application for courier service provider. 
 
-<b> installation <b> :
+<b> installation </b> :
   make sure to use virtual environment   :
   
   installing libraries : 
@@ -28,4 +28,6 @@ future updates :
 manage an order 
   - edit / delete order 
   - order referal token 
+  
+  
 upload sample mysql schema 
