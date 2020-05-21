@@ -1,4 +1,4 @@
-A simple python flask application for courier service provider. 
+Python flask application for courier service provider. 
 
 <b> installation </b> :
   make sure to use virtual environment   :
