@@ -1,6 +1,17 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <p> order details : {{ id }} </p>
+    order details :
+<p>{{order.orderno}}</td>
+        <td>{{order.pick_cname}}</td>
+        <td>{{order.pick_tel}}</td>
+        <td>{{order.pick_address}}</td>
+        <td>{{order.drop_cname}}</td>
+        <td>{{order.drop_tel}}</td>
+        <td>{{order.drop_address}}</td>
+        <td>{{order.order_date}}</td>
+        <td>{{order.status}}</td>
+
+
 
 {% endblock %}

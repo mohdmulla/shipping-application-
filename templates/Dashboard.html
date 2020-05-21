@@ -3,4 +3,38 @@
 {%block body %}
 <h1> Dashboard</h1>
 <p>Welcome {{session.username}}</p>
+<a class="btn btn-success" href="/new_order"> NEW ORDER</a>
+<hr>
+<h3>PENDING ORDERS</h3>
+<table class="table table-striped">
+    <tr>
+        <th>order no</th>
+        <th>customer name</th>
+        <th>customer mobile number</th>
+        <th>customer adddress</th>
+        <th>receiver name</th>
+        <th>receiver mobile number</th>
+        <th>receiver adddress</th>
+        <th> order date </th>
+        <th> status </th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{order.orderno}}</td>
+        <td>{{order.pick_cname}}</td>
+        <td>{{order.pick_tel}}</td>
+        <td>{{order.pick_address}}</td>
+        <td>{{order.drop_cname}}</td>
+        <td>{{order.drop_tel}}</td>
+        <td>{{order.drop_address}}</td>
+        <td>{{order.order_date}}</td>
+        <td>{{order.status}}</td>
+        <td><a href="edit_order/{{order.orderno}}" class="btn btn-default pull-right">Edit Order</a></td>
+        <td><a href="#/{{order.orderno}}" class="btn btn-success">Complete </a></td>
+
+    </tr>
+    {% endfor %}
+</table>
 {% endblock%}

@@ -3,8 +3,11 @@
 {% block body %}
     <h3> EXISTING ORDER</h3>
     <ul class="list-group">
-    {% for client in clients %}
-        <li class="list-group-item"><a href="order/{{client.id}}">{{client.name}}</a></li>
+    {% for order in orders %}
+        <li class="list-group-item"><a href="order/{{order.orderno}}">{{order.pick_cname}}</a></li>
+
     {% endfor %}
+
     </ul>
+
 {% endblock %}

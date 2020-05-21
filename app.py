@@ -28,6 +28,7 @@ def hello_world():
 def about():
     return render_template('about.html')
 
+#register form class
 class Registerform(Form):
     name = StringField('Name', [validators.length(min=1,max=50)])
     username = StringField('Username', [validators.length(min=4,max=25)])
@@ -117,6 +118,7 @@ def is_logged_in(f):
 
 #logout
 @app.route('/logout')
+@is_logged_in
 def logout():
     session.clear()
     flash('You are now logged out','success')
@@ -126,17 +128,90 @@ def logout():
 @app.route('/Dashboard')
 @is_logged_in
 def dashboard():
-    return render_template('Dashboard.html')
+    #create cursor
+    cur = mysql.connection.cursor()
+
+    # show pending orders
+    result = cur.execute("Select * from orders where status = 'pending'")
+    orders = cur.fetchall()
+    if result>0:
+        return render_template('Dashboard.html', orders=orders)
+    else:
+        msg = " NO ORDERS PLACED"
+        return render_template('Dashboard.html', msg=msg)
+
+    # close connection
+    cur.close()
+
+
+# order form class
+class Orderform(Form):
+    pick_cname = StringField('Sender Name', [validators.length(min=1, max=30)])
+    pick_tel = StringField('Sender Contact Number ', [validators.length(min=7, max=15)])
+    pick_address = TextAreaField('Pickup Address', [validators.length(min=7, max=50)])
+    drop_cname = StringField('Reciever name ', [validators.length(min=1, max=30)])
+    drop_tel = StringField('Reciever Contact Number ', [validators.length(min=7, max=15)])
+    drop_address = TextAreaField('Drop-off Address', [validators.length(min=7, max=50)])
+
+@app.route('/new_order', methods=['GET','POST'])
+def neworder():
+    form = Orderform(request.form)
+    if request.method == 'POST' and form.validate():
+        pick_cname = form.pick_cname.data
+        pick_tel = form.pick_tel.data
+        pick_address = form.pick_address.data
+        drop_cname = form.drop_cname.data
+        drop_tel = form.drop_tel.data
+        drop_address = form.drop_address.data
+
+        #create cursor
+        cur = mysql.connection.cursor()
+
+        #execute cursor
+        cur.execute("insert into orders(pick_cname,pick_tel,pick_address,drop_cname,drop_tel,drop_address) VALUES(%s,%s,%s,%s,%s,%s)",(pick_cname,pick_tel,pick_address,drop_cname,drop_tel,drop_address))
+#new update use = session['username']
+
+        #commit to db
+        mysql.connection.commit()
+
+        #close
+        cur.close()
+
+        flash('ORDER PLACED SUCCESSFULLY, ONE OF OUR AGENTS WILL CALL BACK TO VERIFY','SUCCESS')
+
+        return redirect(url_for('dashboard'))
+    return render_template('new_order.html',form=form)
+
 
 @app.route('/orders')
 @is_logged_in
 def orders():
-    return render_template('orders.html', clients=clients)
+    # create cursor
+    cur = mysql.connection.cursor()
 
-@app.route('/order/<string:id>/')
+    # show orders
+    result = cur.execute("Select * from orders")
+    orders = cur.fetchall()
+    if result > 0:
+        return render_template('orders.html', orders=orders)
+    else:
+        msg = " NO ORDERS PLACED"
+        return render_template('orders.html', msg=msg)
+
+    # close connection
+    cur.close()
+
+@app.route('/order/<string:orderno>/')
 @is_logged_in
-def order(id):
-    return render_template('order.html', id=id)
+def order(orderno):
+    # create cursor
+    cur = mysql.connection.cursor()
+
+    # show orders
+    result = cur.execute("Select * from orders where orderno = %s",[orderno])
+    order = cur.fetchone()
+
+    return render_template('order.html', order=order)
 
 
 if __name__ == '__main__':
