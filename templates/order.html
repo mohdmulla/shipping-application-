@@ -1,17 +1,31 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    order details :
-<p>{{order.orderno}}</td>
-        <td>{{order.pick_cname}}</td>
-        <td>{{order.pick_tel}}</td>
-        <td>{{order.pick_address}}</td>
-        <td>{{order.drop_cname}}</td>
-        <td>{{order.drop_tel}}</td>
-        <td>{{order.drop_address}}</td>
-        <td>{{order.order_date}}</td>
-        <td>{{order.status}}</td>
+        <h3>
+        <p>order details : {{order.orderno}}
+        </p><<p>Data : {{order.order_date}}
+        </p><p>Status  : {{order.status}}
+        </p></h3>
 
+
+<div class="container">
+        <div class="card">
+                 <div class="card-body">
+         Customer Name : {{order.pick_cname}}
+        Customer Contact : {{order.pick_tel}}
+        Address : {{order.pick_address}}
+        </div>
+        <div>
+
+        <div class="card">
+                <div class="card-body">
+        Drop Customer Name :         {{order.drop_cname}}
+        Drop Customer Contact :        {{order.drop_tel}}
+        Drop Customer Address : {{order.drop_address}}
+        </div>
+</div>
+
+</div>
 
 
 {% endblock %}
